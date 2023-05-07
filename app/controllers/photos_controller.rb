@@ -1,11 +1,11 @@
 class PhotosController < ApplicationController
   def index
     @photos = Photo.all
-    render({ :template => "photos/all_photos.html.erb"})
+    render({ :template => "photos/all_photos.html.erb" })
   end
 
   def create
-    user_id = params.fetch("input_owner_id")
+    user_id = session.fetch(:user_id)
     image = params.fetch("input_image")
     caption = params.fetch("input_caption")
     photo = Photo.new
@@ -17,9 +17,10 @@ class PhotosController < ApplicationController
   end
 
   def show
+    @session_user_id = session.fetch(:user_id)
     p_id = params.fetch("the_photo_id")
-    @photo = Photo.where({:id => p_id }).first
-    render({:template => "photos/details.html.erb"})
+    @photo = Photo.where({ :id => p_id }).first
+    render({ :template => "photos/details.html.erb" })
   end
 
   def destroy
